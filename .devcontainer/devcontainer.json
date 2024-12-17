@@ -1,5 +1,6 @@
 // https://aka.ms/devcontainer.json
 {
+	// "initializeCommand": "cp .env.example .env",
 	"name": "Existing Docker Compose (Extend)",
 	"dockerComposeFile": [
 		"../docker-compose.yml"
