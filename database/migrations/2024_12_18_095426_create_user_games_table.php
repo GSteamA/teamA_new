@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('status');
             $table->integer('score');
             $table->string('picture')->nullable();
-            $table->foreignId('detail_id')->constrained('game_details');
+            $table->foreignId('detail_id')->constrained('game_details')->nullable();
             $table->timestamps();
         });
     }
