@@ -3,9 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('lasvegas');
-});
+require base_path('routes/lasvegas/web.php');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
