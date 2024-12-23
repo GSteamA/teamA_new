@@ -12,7 +12,8 @@ class LaraveltravelController extends Controller
      */
     public function index()
     {
-        return view('laraveltravel.index');
+        $laraveltravel = LaravelTravel::all(); // 例として全てのレコードを取得
+        return view('laraveltravel.index', compact('laraveltravel'));
     }
 
     /**
