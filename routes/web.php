@@ -2,18 +2,21 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Quiz\QuizGameController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/', function () {
-//     return view('laraveltravel');
-// });
 
-// Route::get('/laraveltravel', [LaraveltravelController::class, 'edit'])->name('laraveltravel.edit');
-// Route::get('/lasvegas', [LasvegasController::class, 'edit'])->name('lasvegas.edit');
-Route::get('/harajyuku', [HarajyukuController::class, 'edit'])->name('harajyuku.edit');
+// クイズ機能に関するルートをグループ化
+Route::prefix('quiz')->name('Quiz.')->controller(QuizGameController::class)->group(function () {
+    Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
+    Route::post('start', 'startGame')->name('start'); // ゲーム開始
+    Route::post('submit-answer', 'submitAnswer')->name('submit-answer'); // 回答提出
+    Route::get('result', 'showResult')->name('result'); // 結果表示
+    Route::get('award/{gameId}', 'showAward')->name('award'); // 表彰状表示
+});
 
 
 Route::get('/dashboard', function () {

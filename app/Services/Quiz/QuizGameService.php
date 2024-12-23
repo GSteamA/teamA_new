@@ -4,10 +4,10 @@ namespace App\Services\Quiz;
 
 use App\Models\Game;
 use App\Models\GameDetail;
-use App\Models\Quiz;
-use App\Models\Region;
-use App\Models\QuizCategory;
 use App\Models\UserGame;
+use App\Models\Quiz\Quiz;
+use App\Models\Quiz\Region;
+use App\Models\Quiz\QuizCategory;
 use App\Services\Game\GameServiceInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 class QuizGameService implements GameServiceInterface
 {
     /**
-     * クイズゲームを初期化し、必要なデータ構造を作成します
+     * クイズゲームを初期化し、必要なデータ構造を作成
      *
      * @param int $regionId 地域ID
      * @param int $categoryId カテゴリーID
@@ -135,7 +135,7 @@ class QuizGameService implements GameServiceInterface
         })->get();
     }
 
-    // プライベートヘルパーメソッド
+    // プライベートメソッド
 
     private function createGameDetail(int $regionId, int $categoryId): GameDetail
     {

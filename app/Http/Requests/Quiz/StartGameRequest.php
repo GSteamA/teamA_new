@@ -20,5 +20,17 @@ class StartGameRequest extends FormRequest
             'category_name' => 'required|string'
         ];
     }
+
+    // バリデーションエラーメッセージ
+    public function messages(): array
+    {
+        return [
+            'region_id.required' => '地域が選択されていません。',
+            'region_id.exists' => '選択された地域は存在しません。',
+            'category_id.required' => 'カテゴリーが選択されていません。',
+            'category_id.exists' => '選択されたカテゴリーは存在しません。',
+        ];
+    }
+
 }
 
