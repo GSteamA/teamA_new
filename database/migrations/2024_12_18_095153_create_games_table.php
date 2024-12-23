@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('game_name');
             $table->integer('base_score');
             $table->json('config_json')->nullable();
-            $table->foreignId('detail_id')->constrained('game_details')->nullable();;
+            $table->foreignId('detail_id')->nullable()->constrained('game_details');
             $table->timestamps();
         });
     }

@@ -33,21 +33,21 @@ function drawCard(deck, imgPosition) {
 
 //カード画像のURLを表示する関数
 let currentCard = "";
-let cardURL = "img/omote.png";
+let cardURL = "img/lasvegas/omote.png";
 function imgCard(currentCard, cardURL) {
-    cardURL = "img/" + currentCard + ".png"
+    cardURL = "img/lasvegas/" + currentCard + ".png"
     return cardURL;
 };
 
 //チップ画像を表示する関数
 function tipImg1(){
-    tip1URL = "img/" + window.selectBet + ".png"
+    tip1URL = "img/lasvegas/" + window.selectBet + ".png"
     $(".tip1").attr("src", tip1URL);
 };
 
 //チップ画像2枚目を表示する関数
 function tipImg2(){
-    tip2URL = "img/" + window.selectBet + ".png"
+    tip2URL = "img/lasvegas/" + window.selectBet + ".png"
     $(".tip2").attr("src", tip2URL);
 };
 
@@ -76,15 +76,15 @@ function adjustNum(card, oldSum) {
 
 //リスタート関数
 function restartGame(){
-    $("#dealer_1, #dealer_2, #dealer_3, #dealer_4, #dealer_5,#you_1, #you_2, #you_3, #you_4, #you_5").attr("src","img/omote.png");
+    $("#dealer_1, #dealer_2, #dealer_3, #dealer_4, #dealer_5,#you_1, #you_2, #you_3, #you_4, #you_5").attr("src","img/lasvegas/omote.png");
     window.dealerScore=0, window.youScore = 0, window.dealer1=0, window.dealer2=0, window.dealer3=0, window.dealer4=0, window.dealer5=0, window.dealerNum1=0, window.dealerNum2=0,window.dealerNum3=0, window.dealerNum4=0, window.dealerNum5=0, window.you1=0, window.you2=0, window.you3=0, window.you4=0, window.you5=0, window.youNum1=0, window.youNum2=0, window.youNum3=0, window.youNum4=0, window.youNum5=0;
     $("#message").css("opacity","0");
     $("#message").html("");
     $("#score").html("");
     $("#dealer_2_2").css("display", "block");
     $("#dealer_score").html("");
-    $(".tip1").attr("src", "img/toumei.png");
-    $(".tip2").attr("src", "img/toumei.png");
+    $(".tip1").attr("src", "img/lasvegas/toumei.png");
+    $(".tip2").attr("src", "img/lasvegas/toumei.png");
 };
 
 //ゲーム終了後の、データ引き継ぎorリセット処理
@@ -124,6 +124,7 @@ function winGame(message){
     tipImg2();
     const audio3 = $("#win")[0];
     audio3.play();
+    sendScore();
     finishGame();
     };
 
@@ -134,7 +135,7 @@ function loseGame(message){
     $("#message").css("opacity","1");
     $("#message").html(message);
     $("#bet").text(0);
-    $(".tip1").attr("src", "img/toumei.png");
+    $(".tip1").attr("src", "img/lasvegas/toumei.png");
     const audio4 = $("#lose")[0];
     audio4.play();
     finishGame();
@@ -172,6 +173,28 @@ function ruleScore21() {
         winGame("BLACK JACK!!!YOU WIN!!!");
     };
 };
+
+//スコアを送信する関数
+async function sendScore(){
+    const score = Number($("#credit_area").text());
+
+    const response = await fetch('/lasvegas/store-or-update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        },
+        body: JSON.stringify({ score: score }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        console.log('ゲームデータが保存されました:', data.game);
+    } else {
+        console.error('エラーが発生しました');
+    }
+}
 
 $(document).ready(function() {
 
@@ -285,6 +308,10 @@ $(document).on("click", ".start", function () {
 
 //hit操作
 $("#hit").click(function () {
+    if($("#bet").text() == 0){
+        playBu();
+        return;
+    }
     const audio5 = $("#card")[0];
     audio5.play();
         if (window.you3 == 0) {
@@ -325,6 +352,11 @@ $("#hit").click(function () {
 
 //Stand操作
 $("#stand").on("click", function () {
+    if($("#bet").text() == 0){
+        playBu();
+        return;
+    }
+
     const audio5 = $("#card")[0];
     audio5.play();
     if (window.dealerScore == 21) {
@@ -402,6 +434,10 @@ $("#stand").on("click", function () {
 
 //Sullender操作
 $("#surrender").on("click", function () {
+    if($("#bet").text() == 0){
+        playBu();
+        return;
+    }
     const audio5 = $("#card")[0];
     audio5.play();
     surrenderGame();
