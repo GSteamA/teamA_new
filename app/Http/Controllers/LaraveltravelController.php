@@ -12,7 +12,7 @@ class LaraveltravelController extends Controller
      */
     public function index()
     {
-        //
+        return view('laraveltravel.index');
     }
 
     /**
