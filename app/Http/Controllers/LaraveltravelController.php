@@ -35,10 +35,16 @@ class LaraveltravelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Laraveltravel $laraveltravel)
+    // public function show(Laraveltravel $laraveltravel)
+    // {
+    //     //
+    // }
+    public function show()
     {
-        //
+        return view('laraveltravel.Game_test.game_test_harajuku');
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

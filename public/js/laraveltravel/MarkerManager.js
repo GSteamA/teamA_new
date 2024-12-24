@@ -72,7 +72,7 @@ export class MarkerManager {
 
     handleMarkerClick(location) {
         // this.logDebug('handleMarkerClick', location);
-        // this.map.panTo(location);
+        this.map.panTo(location);
         window.location.href = location.url
     }
     }

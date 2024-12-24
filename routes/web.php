@@ -15,9 +15,10 @@ Route::get('/', function () {
 //ログインすると、ララベルトラベルのトップページを表示
 Route::get('/dashboard', [LaravelTravelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/game-test-harajuku', function () {
-    return view('laraveltravel.Game_test.game_test_harajuku');
-})->name('game_test_harajuku');
+//追加したルートRoute::get('/laraveltravel/Game_test/game-test-harajuku', [LaravelTravelController::class, 'show'])->name('game_test_harajuku');
+// Route::get('/laraveltravel/Game_test/game-test-harajuku', function () {
+//     return view('laraveltravel.Game_test.game_test_harajuku');
+// })->name('game_test_harajuku');
 
 // クイズ機能に関するルートをグループ化
 Route::prefix('quiz')->name('Quiz.')->controller(QuizGameController::class)->group(function () {
