@@ -1,0 +1,110 @@
+erDiagram
+    users ||--o{ user_games : "plays"
+    games ||--o{ user_games : "includes"
+    games ||--o{ game_details : "contains"
+    
+    regions ||--o{ quizzes : "has"
+    quiz_categories ||--o{ quizzes : "categorizes"
+    quizzes ||--o{ quiz_options : "has"
+    quizzes ||--o{ quiz_results : "records"
+    award_images ||--o{ regions : "belongs to"
+    award_images ||--o{ quiz_categories : "belongs to"
+    
+    users {
+        id int PK
+        name string
+        email string
+        password string
+        is_admin boolean
+        email_verified_at timestamp
+        remember_token string
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    games {
+        id int PK
+        game_name string
+        base_score int
+        config_json json
+        detail_id int FK
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    game_details {
+        id int PK
+        json json
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    user_games {
+        id int PK
+        user_id int FK
+        game_id int FK
+        status string
+        score int
+        picture string
+        detail_id int FK
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    regions {
+        id int PK
+        name string
+        display_name string
+        code string
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    quiz_categories {
+        id int PK
+        name string
+        display_name string
+        code string
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    quizzes {
+        id int PK
+        region_id int FK
+        category_id int FK
+        question text
+        explanation text
+        is_ai_generated boolean
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    quiz_options {
+        id int PK
+        quiz_id int FK
+        option_text text
+        is_correct boolean
+        display_order int
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    quiz_results {
+        id int PK
+        quiz_id int FK
+        user_id int FK
+        selected_option_id int FK
+        is_correct boolean
+        created_at timestamp
+        updated_at timestamp
+    }
+    
+    award_images {
+        id int PK
+        region_id int FK
+        category_id int FK
+        image_path string
+        created_at timestamp
+        updated_at timestamp
+    }
