@@ -7,10 +7,9 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ url('css/lasvegas/lasvegas.css') }}">
   <link rel="icon" href="{{ url('img/lasvegas/icon.jpeg') }}" type="image/x-icon">
-  <link rel="preconnect" href="{{ url('https://fonts.googleapis.com') }}">
-  <link rel="preconnect" href="{{ url('https://fonts.gstatic.com') }}" crossorigin>
-  <link href="{{ url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap') }}"
-    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Hachi+Maru+Pop&family=Montserrat+Alternates:wght@100;200;300;400&family=Poiret+One&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Maru+Gothic&family=Zen+Old+Mincho&display=swap" rel="stylesheet">
   <title>LasVegas|LaravelTravel</title>
 </head>
 
@@ -58,12 +57,12 @@
             </svg>
           </div>
           <div id="score">0</div>
-              
+
           <div class="announce">
             <img src="{{ url('img/lasvegas/announce1.png') }}" alt="ディーラーの犬の画像" class="announce-dog">
             <div class="hukidashi">
               <img src="{{ url('img/lasvegas/hukidashi.png') }}" alt="吹き出し画像">
-              <p id="announce-msg">賭けたい金額を<br>下のボタンから選んでね！</p>
+              <p id="announce-msg">Place your bets please.<br>（賭けたい金額を下のボタンから選んでね！）</p>
             </div>
           </div>
 
@@ -98,6 +97,7 @@
     <audio id="lose"   src="{{ url('music/lasvegas/lose.mp3') }}" preload="auto" ></audio>
     <audio id="card"   src="{{ url('music/lasvegas/card.mp3') }}" preload="auto" ></audio>
     <script src="{{ asset('js/lasvegas/jquery-2.1.3.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/lasvegas/main.js') }}"></script>
 </body>
 
