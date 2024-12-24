@@ -51,7 +51,7 @@ class QuizGameService implements GameServiceInterface
 
             DB::commit();
 
-            dd($gameDetail->json['quiz_config']);
+            // dd($gameDetail->json['quiz_config']);
             return [
                 'game_id' => $game->id,
                 'quizzes' => $quizzes,
