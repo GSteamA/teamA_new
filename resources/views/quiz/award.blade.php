@@ -9,7 +9,7 @@
     <div class="award-content">
         <div class="award-image">
             <!-- 表彰状の画像を表示 -->
-            <img src="{{ asset('storage/' . $result['award_image']) }}" alt="表彰状" class="certificate-image">
+            <img src="{{ asset($result['award_image']) }}" alt="表彰状" class="certificate-image">
         </div>
 
         <div class="award-message">
@@ -38,11 +38,12 @@
     }
 
     .award-title {
-        color: white;
+        color: #FF9F1C;
         font-size: 2rem;
         font-weight: bold;
         margin-bottom: 30px;
         text-align: center;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     }
 
     .award-content {

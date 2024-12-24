@@ -252,10 +252,11 @@ class QuizGameService implements GameServiceInterface
     private function generateAwardImagePath(int $regionId, int $categoryId): string
     {
         return sprintf(
-            'awards/%d_%d_%s.jpg',
+            'img/quiz/awards_%d_%d_%s.jpg',
             $regionId,
             $categoryId,
-            now()->format('Ymd_His')
+            // now()->format('Ymd_His')
+            'default'
         );
     }
 

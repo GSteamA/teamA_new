@@ -161,19 +161,29 @@ class QuizGameController extends Controller
 
     public function showAward(int $gameId)
     {
-        $userGame = UserGame::with('gameDetail')
+        $userGame = UserGame::with(['gameDetail'])
             ->where('game_id', $gameId)
             ->where('user_id', $this->getUserId())
             ->first();
 
-        if (!$userGame || !$userGame->picture) {
+        if (!$userGame) {
             return redirect()->route('Quiz.menu', ['region' => session('last_region', 'harajuku')])
                 ->with('error', '表彰状の表示に失敗しました。');
         }
 
+        // GameDetailから地域IDとカテゴリーIDを取得
+        $gameDetail = $userGame->gameDetail;
+        $config = is_string($gameDetail->json) ? json_decode($gameDetail->json, true) : $gameDetail->json;
+        
+        // 静的な画像ファイルのパスを生成
+        $imagePath = sprintf('img/quiz/award_%d_%d_default.jpg', 
+            $config['region_id'], 
+            $config['category_id']
+        );
+
         return view('quiz.award', [
             'result' => [
-                'award_image' => $userGame->picture
+                'award_image' => $imagePath
             ]
         ]);
     }
