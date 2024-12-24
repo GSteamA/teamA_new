@@ -103,10 +103,35 @@ class QuizGameService implements GameServiceInterface
      */
     public function finalizeGame(array $gameState): array
     {
+        $userId = $this->getUserId();
+        
+        \Log::debug('Session Data:', [
+            'all' => session()->all(),
+            'test_mode' => session('test_mode'),
+            'user_id' => session('user_id')
+        ]);
+
+        \Log::debug('Game State:', [
+            'state' => $gameState,
+            'user_id' => $userId
+        ]);
+
         $userGame = UserGame::where([
             'game_id' => $gameState['game_id'],
-            'user_id' => auth()->id()
+            'user_id' => $userId
         ])->first();
+
+        \Log::debug('User Game Query:', [
+            'conditions' => [
+                'game_id' => $gameState['game_id'],
+                'user_id' => $userId
+            ],
+            'result' => $userGame ? $userGame->toArray() : null
+        ]);
+
+        if (!$userGame) {
+            throw new \Exception('ユーザーゲーム情報が見つかりません。');
+        }
 
         $correctAnswers = collect($gameState['answers'])
             ->filter(fn($answer) => $answer['is_correct'])
@@ -176,8 +201,16 @@ class QuizGameService implements GameServiceInterface
 
     private function createUserGameRecord(int $gameId, int $detailId): void
     {
+        // 開発環境でのみテストユーザーIDを使用
+        $userId = app()->environment('local') ? 1 : auth()->id();
+        
+        if (!$userId) {
+            throw new \Exception('ユーザーが認証されていません。');
+        }
+
         UserGame::create([
-            'user_id' => auth()->id(),
+            // 'user_id' => auth()->id(),
+            'user_id' => $userId, // 開発環境でのみテストユーザーIDを使用
             'game_id' => $gameId,
             'status' => 'in_progress',
             'score' => 0,
@@ -224,5 +257,14 @@ class QuizGameService implements GameServiceInterface
             $categoryId,
             now()->format('Ymd_His')
         );
+    }
+
+    private function getUserId(): int
+    {
+        // テストモード時のユーザーID取得ロジックを追加
+        if (app()->environment('local') && session('test_mode')) {
+            return session('user_id', 1);
+        }
+        return auth()->id();
     }
 }

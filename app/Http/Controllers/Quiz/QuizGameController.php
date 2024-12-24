@@ -9,6 +9,7 @@ use App\Models\Quiz\QuizCategory;
 use Illuminate\Http\Request;
 use App\Http\Requests\Quiz\StartGameRequest;
 use App\Http\Requests\Quiz\SubmitAnswerRequest;
+use App\Models\UserGame;
 
 class QuizGameController extends Controller
 {
@@ -38,7 +39,7 @@ class QuizGameController extends Controller
                 ->with('error', '指定された地域が見つかりません。');
         }
     
-        // その地域で利用可能なカテゴリーを取得
+        // その地域で利用可能なカテゴリーを��
         $categories = $this->quizService->getAvailableCategories($region->id);
     
         return view('quiz.menu', [
@@ -92,12 +93,7 @@ class QuizGameController extends Controller
             'region' => $request->region_name,
             'category' => $request->category_name
         ]);
-        // return [
-        //     'gameConfig' => $gameConfig,
-        //     // 'quizzes' => $gameConfig['quizzes'],
-        //     'region' => $request->region_name,
-        //     'category' => $request->category_name
-        // ];
+
     }
 
     /**
@@ -157,9 +153,36 @@ class QuizGameController extends Controller
 
         // 表彰の条件を満たしている場合は表彰画面へリダイレクト
         if ($result['qualified_for_award']) {
-            return redirect()->route('quiz.award', ['game_id' => $quizState['game_id']]);
+            return redirect()->route('Quiz.award', ['gameId' => $quizState['game_id']]);
         }
 
         return view('quiz.result', compact('result'));
+    }
+
+    public function showAward(int $gameId)
+    {
+        $userGame = UserGame::with('gameDetail')
+            ->where('game_id', $gameId)
+            ->where('user_id', $this->getUserId())
+            ->first();
+
+        if (!$userGame || !$userGame->picture) {
+            return redirect()->route('Quiz.menu', ['region' => session('last_region', 'harajuku')])
+                ->with('error', '表彰状の表示に失敗しました。');
+        }
+
+        return view('quiz.award', [
+            'result' => [
+                'award_image' => $userGame->picture
+            ]
+        ]);
+    }
+
+    private function getUserId(): int
+    {
+        if (app()->environment('local') && session('test_mode')) {
+            return session('user_id', 1);
+        }
+        return auth()->id();
     }
 }

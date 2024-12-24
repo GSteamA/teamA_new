@@ -136,7 +136,17 @@
         let currentQuestionIndex = 0;
 
         function displayQuestion() {
+            console.log('Current index:', currentQuestionIndex);
+            console.log('Quizzes array:', quizzes);
+            
+            if (currentQuestionIndex >= quizzes.length) {
+                console.error('Quiz index out of bounds');
+                window.location.href = '{{ route("Quiz.result") }}';
+                return;
+            }
+            
             const quiz = quizzes[currentQuestionIndex];
+            console.log('Current quiz:', quiz);
             
             // 問題文の表示
             document.getElementById('question-display').textContent = quiz.question;
@@ -158,13 +168,9 @@
         }
 
         async function submitAnswer(quizId, answerId) {
-            // 選択肢のボタンを無効化
-            document.querySelectorAll('.option-button').forEach(button => {
-                button.disabled = true;
-            });
-
+            console.log('Submitting answer:', { quizId, answerId });
             try {
-                const response = await fetch('/Quiz/submit-answer', {
+                const response = await fetch('{{ route("Quiz.submit-answer") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -172,16 +178,22 @@
                     },
                     body: JSON.stringify({ quiz_id: quizId, answer_id: answerId })
                 });
-
+                
+                console.log('Response:', response);
                 const result = await response.json();
+                console.log('Result:', result);
+                
                 showFeedback(result);
-
             } catch (error) {
                 console.error('Error:', error);
             }
         }
 
         function showFeedback(result) {
+            console.log('Feedback result:', result);
+            console.log('Current question index:', currentQuestionIndex);
+            console.log('Total questions:', quizzes.length);
+            
             const feedbackArea = document.getElementById('feedback-area');
             feedbackArea.className = `feedback-area ${result.result.is_correct ? 'correct' : 'incorrect'}`;
             
@@ -195,7 +207,7 @@
             const nextButton = document.getElementById('next-button');
             nextButton.onclick = () => {
                 if (result.is_last_question) {
-                    window.location.href = '/Quiz/result';
+                    window.location.href = '{{ route("Quiz.result") }}';
                 } else {
                     currentQuestionIndex++;
                     displayQuestion();
