@@ -39,16 +39,16 @@ class QuizGameController extends Controller
         // その地域で利用可能なカテゴリーを取得
         $categories = $this->quizService->getAvailableCategories($region->id);
 
-        // return view('quiz.menu', [
-        //     'region' => $region,
-        //     'categories' => $categories
-        // ]);
-
-        // テスト用に変更：ビューの代わりにデータを返す
-        return [
+        return view('quiz.menu', [
             'region' => $region,
             'categories' => $categories
-        ];
+        ]);
+
+        // テスト用に変更：ビューの代わりにデータを返す
+        // return [
+        //     'region' => $region,
+        //     'categories' => $categories
+        // ];
     }
 
     /**
@@ -60,6 +60,7 @@ class QuizGameController extends Controller
      */
     public function startGame(StartGameRequest $request)
     {
+        // dd($request ?? 'null');
         // ゲームの初期化
         $gameConfig = $this->quizService->initializeGame([
             'region_id' => $request->region_id ?? 1,
@@ -68,7 +69,7 @@ class QuizGameController extends Controller
 
         // dd($gameConfig ?? 'null');
         if (!$gameConfig) {
-            return redirect()->route('quiz.menu')
+            return redirect()->route('Quiz.menu')
                 ->with('error', 'クイズの準備に失敗しました。');
         }
 

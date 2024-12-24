@@ -29,9 +29,9 @@ class QuizGameService implements GameServiceInterface
 
             // ゲーム設定の構成
             $gameDetail = $this->createGameDetail($params['region_id'], $params['category_id']);
-            
             // ゲームインスタンスの作成
             $game = $this->createGameInstance($gameDetail->id);
+            // dd($game);
 
             // クイズの取得と検証
             $quizzes = $this->getRandomQuizzes(
@@ -39,6 +39,7 @@ class QuizGameService implements GameServiceInterface
                 $params['category_id'],
                 $gameDetail->json['quiz_config']['questions_per_game']
             );
+            // dd($quizzes);
 
             if ($quizzes->isEmpty()) {
                 DB::rollBack();
@@ -50,6 +51,7 @@ class QuizGameService implements GameServiceInterface
 
             DB::commit();
 
+            dd($gameDetail->json['quiz_config']);
             return [
                 'game_id' => $game->id,
                 'quizzes' => $quizzes,
