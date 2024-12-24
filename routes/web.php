@@ -17,6 +17,9 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->name('laraveltravel.index');
+Route::get('/game-test-harajuku', function () {
+    return view('laraveltravel.Game_test.game_test_harajuku');
+})->name('game_test_harajuku');
 
 //開発中は認証を経由せずにテストするため以下のルートを記載しない
 Route::middleware('auth')->group(function () {

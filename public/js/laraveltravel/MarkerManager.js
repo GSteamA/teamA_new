@@ -59,7 +59,7 @@ export class MarkerManager {
                 this.handleMarkerClick(location);
             });
 
-            this.markers.push(marker);
+            // this.markers.push(marker);
         });
     }
 
@@ -71,7 +71,8 @@ export class MarkerManager {
     }
 
     handleMarkerClick(location) {
-        this.logDebug('handleMarkerClick', location);
-        this.map.panTo(location);
+        // this.logDebug('handleMarkerClick', location);
+        // this.map.panTo(location);
+        window.location.href = location.url
     }
     }

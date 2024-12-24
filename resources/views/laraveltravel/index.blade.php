@@ -33,7 +33,7 @@
         import { MarkerManager } from '{{ asset('js/laraveltravel/MarkerManager.js') }}';
 
         const isDebug = config.isDebug;
-        const GOOGLE_MAPS_API_KEY = config.GOOGLE_MAPS_API_KEY;
+        const GOOGLE_MAPS_API_KEY = config.GOOGLE_MAPS_API_KEY; //{{ env('GOOGLE_MAPS_API_KEY') }};
         const GOOGLE_MAP_ID = config.GOOGLE_MAP_ID;
         
         // DOM要素の取得
@@ -54,17 +54,23 @@
         //     map.addMarker(locations);
         // });
         // await map.addSampleMarkers();
-
+　console.log("テスト"+"{{ route('game_test_harajuku') }}");
         const locations = [
-            { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' },
-            { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' },
-            { lat: 36.147685, lng: -115.15651, title: 'ラスベガス' }     
+            { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' , url: "{{ route('game_test_harajuku') }}"},
+            { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' , url: "{{ route('game_test_harajuku') }}"},
+            { lat: 36.147685, lng: -115.15651, title: 'ラスベガス' , url: "{{ route('game_test_harajuku') }}"}     
             ];
-        
-
             map.addSampleMarker();
             map.addMarker(locations);
-        await map.addSampleMarkers();
+        // map.addSampleMarker();
+        // locations.forEach(function(location) {
+        //     let marker = map.addMarker(location.position);
+        //     marker.addListener('click', function() {
+        //         window.location.href = location.url;
+        //         echo(location.url);
+        //     });
+        // });
+        // await map.addSampleMarkers();
 
 
         // /**
