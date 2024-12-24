@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('laraveltravel.index')" :active="request()->routeIs('laraveltravel.index')">
+            {{ __('Laraveltravel一覧') }}
+          </x-nav-link>
                 </div>
             </div>
 
