@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LaraveltravelController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Quiz\QuizGameController;
 use App\Http\Controllers\Lasvegas\LasvegasController;
@@ -24,6 +25,13 @@ Route::get('/dashboard', function () {
     return view('lasvegas.lasvegas1');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->name('laraveltravel.index');
+Route::get('/game-test-harajuku', function () {
+    return view('laraveltravel.Game_test.game_test_harajuku');
+})->name('game_test_harajuku');
+
+//開発中は認証を経由せずにテストするため以下のルートを記載しない
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
