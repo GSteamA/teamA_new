@@ -27,6 +27,13 @@ class QuizGameService implements GameServiceInterface
         try {
             DB::beginTransaction();
 
+            //デバグ用
+            // dd([
+            //     'params' => $params,
+            //     'region_id' => $params['region_id'] ?? 'null',
+            //     'category_id' => $params['category_id'] ?? 'null'
+            // ]);
+
             // ゲーム設定の構成
             $gameDetail = $this->createGameDetail($params['region_id'], $params['category_id']);
             // ゲームインスタンスの作成
@@ -60,6 +67,10 @@ class QuizGameService implements GameServiceInterface
 
         } catch (\Exception $e) {
             DB::rollBack();
+            dd([
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return null;
         }
     }

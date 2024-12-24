@@ -9,15 +9,10 @@ Route::get('/', function () {
     return view('lasvegas.welcome');
 });
 
-
-// クイズ機能に関するルートをグループ化
-Route::prefix('quiz')->name('Quiz.')->controller(QuizGameController::class)->group(function () {
-    Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
-    Route::post('start', 'startGame')->name('start'); // ゲーム開始
-    Route::post('submit-answer', 'submitAnswer')->name('submit-answer'); // 回答提出
-    Route::get('result', 'showResult')->name('result'); // 結果表示
-    Route::get('award/{gameId}', 'showAward')->name('award'); // 表彰状表示
+Route::get('/lasve', function () {
+    return view('lasvegas.welcome');
 });
+
 
 
 Route::get('/dashboard', function () {
@@ -31,6 +26,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/lasvegas2', function () {return view('lasvegas.lasvegas');})->name('lasvegas2');
     Route::post('/lasvegas/store-or-update', [LasvegasController::class, 'storeOrUpdate']);
+
+    // クイズ機能に関するルートをグループ化
+    Route::prefix('quiz')->name('Quiz.')->controller(QuizGameController::class)->group(function () {
+        Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
+        Route::post('start', 'startGame')->name('start'); // ゲーム開始
+        Route::post('submit-answer', 'submitAnswer')->name('submit-answer'); // 回答提出
+        Route::get('result', 'showResult')->name('result'); // 結果表示
+        Route::get('award/{gameId}', 'showAward')->name('award'); // 表彰状表示
+    });
 });
 
 require __DIR__.'/auth.php';

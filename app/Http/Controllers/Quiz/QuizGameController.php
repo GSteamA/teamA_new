@@ -31,24 +31,20 @@ class QuizGameController extends Controller
     {
         // QuizGameServiceのメソッドを使用して地域情報を取得・検証
         $region = $this->quizService->validateAndGetRegion($request->region);
+        // dd($request);
         if (!$region) {
-            return redirect()->route('home')
+            // デフォルトの地域コード（原宿）を指定してリダイレクト（前のページに戻す）
+            return redirect()->route('Quiz.menu', ['region' => 'harajuku'])
                 ->with('error', '指定された地域が見つかりません。');
         }
-
+    
         // その地域で利用可能なカテゴリーを取得
         $categories = $this->quizService->getAvailableCategories($region->id);
-
+    
         return view('quiz.menu', [
             'region' => $region,
             'categories' => $categories
         ]);
-
-        // テスト用に変更：ビューの代わりにデータを返す
-        // return [
-        //     'region' => $region,
-        //     'categories' => $categories
-        // ];
     }
 
     /**
@@ -60,7 +56,15 @@ class QuizGameController extends Controller
      */
     public function startGame(StartGameRequest $request)
     {
-        // dd($request ?? 'null');
+        //デバグ用
+        // dd([
+        //     'request_all' => $request->all(),
+        //     'region_id' => $request->region_id,
+        //     'category_id' => $request->category_id,
+        //     'region_name' => $request->region_name,
+        //     'category_name' => $request->category_name
+        // ]);
+
         // ゲームの初期化
         $gameConfig = $this->quizService->initializeGame([
             'region_id' => $request->region_id ?? 1,
@@ -69,8 +73,8 @@ class QuizGameController extends Controller
 
         // dd($gameConfig ?? 'null');
         if (!$gameConfig) {
-            return redirect()->route('Quiz.menu')
-                ->with('error', 'クイズの準備に失敗しました。');
+            return redirect()->route('Quiz.menu', ['region' => session('last_region', 'default')])
+            ->with('error', 'クイズの準備に失敗しました。');
         }
 
         // セッションにゲーム状態を保存
