@@ -35,7 +35,7 @@ class QuizGameController extends Controller
         // dd($request);
         if (!$region) {
             // デフォルトの地域コード（原宿）を指定してリダイレクト（前のページに戻す）
-            return redirect()->route('Quiz.menu', ['region' => 'harajuku'])
+            return redirect()->route('quiz.menu', ['region' => 'harajuku'])
                 ->with('error', '指定された地域が見つかりません。');
         }
     
@@ -74,7 +74,7 @@ class QuizGameController extends Controller
 
         // dd($gameConfig ?? 'null');
         if (!$gameConfig) {
-            return redirect()->route('Quiz.menu', ['region' => session('last_region', 'default')])
+            return redirect()->route('quiz.menu', ['region' => session('last_region', 'default')])
             ->with('error', 'クイズの準備に失敗しました。');
         }
 
@@ -153,7 +153,7 @@ class QuizGameController extends Controller
 
         // 表彰の条件を満たしている場合は表彰画面へリダイレクト
         if ($result['qualified_for_award']) {
-            return redirect()->route('Quiz.award', ['gameId' => $quizState['game_id']]);
+            return redirect()->route('quiz.award', ['gameId' => $quizState['game_id']]);
         }
 
         return view('quiz.result', compact('result'));
@@ -167,7 +167,7 @@ class QuizGameController extends Controller
             ->first();
 
         if (!$userGame) {
-            return redirect()->route('Quiz.menu', ['region' => session('last_region', 'harajuku')])
+            return redirect()->route('quiz.menu', ['region' => session('last_region', 'harajuku')])
                 ->with('error', '表彰状の表示に失敗しました。');
         }
 

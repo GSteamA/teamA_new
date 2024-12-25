@@ -7,7 +7,7 @@
     <h1 class="driver-title">クイズゲームテストドライバー</h1>
     
     <div class="driver-content">
-        <form action="{{ route('Quiz.test-login') }}" method="POST" class="test-form">
+        <form action="{{ route('quiz.test-login') }}" method="POST" class="test-form">
             @csrf
             <div class="form-group">
                 <label for="user_id">テストユーザーID:</label>
