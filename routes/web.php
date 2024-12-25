@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 // ログイン後の画面を表示
-Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 //ユーザー認証ずみのユーザーのみ表示可能
 Route::middleware('auth')->group(function () {
