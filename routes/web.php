@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Quiz\QuizGameController;
 use App\Http\Controllers\Lasvegas\LasvegasController;
 
-
-//ルートではログイン画面を表示（現在は仮でlasvegas/welcome.blade.phpを表示）
-
 //ルートではログイン画面を表示（現在は仮でlasvegas/welcome.blade.phpを表示）
 Route::get('/', function () {
     return view('lasvegas.welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('lasvegas.lasvegas1');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 // クイズ機能に関するルートをグループ化
