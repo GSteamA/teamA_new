@@ -15,7 +15,7 @@ class ShowPictureController extends Controller
 
         // user_gamesテーブルから該当ユーザーのデータを取得
         $games = UserGame::where('user_id', $user->id)
-            ->get(['game_id', 'picture']); // 必要なカラムのみ取得
+            ->get(['picture']); // 必要なカラムのみ取得
 
         // デバッグ用に取得したデータをログに出力
         \Log::info('取得したゲームデータ:', $games->toArray());
@@ -25,10 +25,9 @@ class ShowPictureController extends Controller
         }
 
         // game_idごとにデータを整理
-        $gameData = $games->groupBy('game_id')->map(function ($gameGroup) {
+        $gameData = $games->groupBy('picture')->map(function ($gameGroup) {
             $game = $gameGroup->first();
             return [
-                'game_id' => $game->game_id,
                 'has_picture' => !empty($game->picture), // pictureがあるかどうか
                 'picture' => $game->picture,
             ];
