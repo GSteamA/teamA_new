@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     //原宿ゲーム
     Route::get('/harajuku', function () {return view('quiz.wellcome');})->name('quiz.wellcome');
+    Route::get('/hakata', function () {return view('quiz.hakatawellcome');})->name('quiz.hakatawellcome');
     // クイズ機能に関するルートをグループ化
     Route::prefix('quiz')->name('quiz.')->controller(QuizGameController::class)->group(function () {
     Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
