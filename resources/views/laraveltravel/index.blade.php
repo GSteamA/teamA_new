@@ -54,7 +54,7 @@
         //     map.addMarker(locations);
         // });
         // await map.addSampleMarkers();
-　console.log("テスト"+"{{ route('game_test_harajuku') }}");
+ console.log("テスト"+"{{ route('game_test_harajuku') }}");
         const locations = [
             { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' , url: "{{ route('game_test_harajuku') }}"},
             { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' , url: "{{ route('game_test_harajuku') }}"},

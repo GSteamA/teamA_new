@@ -21,7 +21,8 @@ class LaraveltravelController extends Controller
      */
     public function create()
     {
-        //
+        $laraveltravel = LaravelTravel::all(); // 例として全てのレコードを取得
+        return view('laraveltravel.create', compact('laraveltravel'));
     }
 
     /**
