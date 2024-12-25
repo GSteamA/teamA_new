@@ -7,9 +7,16 @@ use App\Http\Controllers\Quiz\QuizGameController;
 use App\Http\Controllers\Lasvegas\LasvegasController;
 use App\Http\Controllers\Quiz\QuizTestController;
 
+//ルートではログイン画面を表示（現在は仮でlasvegas/welcome.blade.phpを表示）
 Route::get('/', function () {
     return view('lasvegas.welcome');
 });
+
+
+Route::get('/dashboard', function () {
+    return view('lasvegas.lasvegas1');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::get('/lasve', function () {
     return view('lasvegas.welcome');
@@ -19,6 +26,7 @@ Route::get('/harajuku', function () {
     return view('quiz.wellcome');
 })->name('quiz.wellcome');
 
+
 // クイズ機能に関するルートをグループ化
 Route::prefix('quiz')->name('quiz.')->controller(QuizGameController::class)->group(function () {
     Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
@@ -27,6 +35,7 @@ Route::prefix('quiz')->name('quiz.')->controller(QuizGameController::class)->gro
     Route::get('result', 'showResult')->name('result'); // 結果表示
     Route::get('award/{gameId}', 'showAward')->name('award'); // 表彰状表示
 });
+
 
 Route::get('/dashboard', function () {
     return view('lasvegas.lasvegas1');

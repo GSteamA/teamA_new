@@ -10,19 +10,24 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Montserrat+Alternates:wght@100;200;300;400&family=Orbitron:wght@400..900&family=Poiret+One&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Old+Mincho&display=swap" rel="stylesheet">
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <link href="{{ asset('css/auth/form.css') }}" rel="stylesheet">
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+    <body>
+        <div class="form-wrapper">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <p class="logo">LaraTravel</p>
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            <div class="form-content">
                 {{ $slot }}
             </div>
         </div>
