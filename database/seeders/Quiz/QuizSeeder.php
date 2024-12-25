@@ -147,7 +147,7 @@ class QuizSeeder extends Seeder
                 ]
             ],
             [
-                'question' => '原宿の表参道に、戦後初めてできたファッションブランドの旗艦��は？',
+                'question' => '原宿の表参道に、戦後初めてできたファッションブランドの旗艦店は？',
                 'explanation' => '1967年にルイ・ヴィトンが表参道に日本初の店舗をオープンし、その後の表参道のブランドストリート化の先駆けとなりました。',
                 'options' => [
                     ['text' => 'ルイ・ヴィトン', 'is_correct' => true],
@@ -258,7 +258,7 @@ class QuizSeeder extends Seeder
             ],
             [
                 'question' => '原宿で使われる「激かわ」の「激」の漢字の読み方は？',
-                'explanation' => '「激」は「げき」と読み、「とても」「非常に」という��味を強調する接頭語として使われます。',
+                'explanation' => '「激」は「げき」と読み、「とても」「非常に」という意味を強調する接頭語として使われます。',
                 'options' => [
                     ['text' => 'げき', 'is_correct' => true],
                     ['text' => 'はげ', 'is_correct' => false],
@@ -307,7 +307,7 @@ class QuizSeeder extends Seeder
                 ]
             ],
             [
-                'question' => '原宿のス���リートブランド「A BATHING APE」の創設者は？',
+                'question' => '原宿のストリートブランド「A BATHING APE」の創設者は？',
                 'explanation' => 'NIGO（西村六郎）は、1993年に原宿で「A BATHING APE」を立ち上げ、ストリートファッションの革新者となりました。',
                 'options' => [
                     ['text' => 'NIGO', 'is_correct' => true],
@@ -327,7 +327,7 @@ class QuizSeeder extends Seeder
                 ]
             ],
             [
-                'question' => '原宿のファッション誌「FRUiTS」の創��者は？',
+                'question' => '原宿のファッション誌「FRUiTS」の創刊者は？',
                 'explanation' => '青木正一は1997年にFRUiTSを創刊し、20年以上にわたって原宿のストリートファッションを世界に発信しました。',
                 'options' => [
                     ['text' => '青木正一', 'is_correct' => true],
@@ -398,7 +398,7 @@ class QuizSeeder extends Seeder
             ],
             [
                 'question' => '原宿の観光客の年間消費額は約いくら？',
-                'explanation' => '原宿を訪れる観光客��年間消費額は約500億円と推定されています。',
+                'explanation' => '原宿を訪れる観光客の年間消費額は約500億円と推定されています。',
                 'options' => [
                     ['text' => '約500億円', 'is_correct' => true],
                     ['text' => '約100億円', 'is_correct' => false],
@@ -460,7 +460,7 @@ class QuizSeeder extends Seeder
         
         $quizzes = [
             [
-                'question' => '博多の伝���工芸品「博多織」の特徴として正しいものは？',
+                'question' => '博多の伝統工芸品「博多織」の特徴として正しいものは？',
                 'explanation' => '博多織は緻密な織り方が特徴で、表裏の区別がないのが特徴です。絹糸を使用し、堅牢で美しい織物として知られています。',
                 'options' => [
                     ['text' => '表裏の区別がない', 'is_correct' => true],
@@ -480,7 +480,7 @@ class QuizSeeder extends Seeder
                 ]
             ],
             [
-                'question' => '博��の伝統芸能「博多芸妓」の活動拠点として知られる場所は？',
+                'question' => '博多の伝統芸能「博多芸妓」の活動拠点として知られる場所は？',
                 'explanation' => '冷泉公園周辺は「博多券番」があり、博多芸妓の活動拠点として知られています。',
                 'options' => [
                     ['text' => '冷泉公園周辺', 'is_correct' => true],
@@ -501,7 +501,7 @@ class QuizSeeder extends Seeder
             ],
             [
                 'question' => '博多どんたくの開催時期は？',
-                'explanation' => '博多どんたく���毎年5月3日、4日に開催される福岡市の伝統的な祭りです。',
+                'explanation' => '博多どんたくは毎年5月3日、4日に開催される福岡市の伝統的な祭りです。',
                 'options' => [
                     ['text' => '5月3日・4日', 'is_correct' => true],
                     ['text' => '7月1日・2日', 'is_correct' => false],
@@ -601,7 +601,7 @@ class QuizSeeder extends Seeder
             ],
             [
                 'question' => '2011年に開業した現在の博多駅ビルの愛称は？',
-                'explanation' => 'JR博多シティは、2011年3月に開業した複合商業施設で、「時空（とき）の架け橋」をコンセプトに、伝統��革新が融合した施設として親しまれています。',
+                'explanation' => 'JR博多シティは、2011年3月に開業した複合商業施設で、「時空（とき）の架け橋」をコンセプトに、伝統と革新が融合した施設として親しまれています。',
                 'options' => [
                     ['text' => 'JR博多シティ', 'is_correct' => true],
                     ['text' => '博多ステーションタワー', 'is_correct' => false],
