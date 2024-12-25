@@ -42,7 +42,7 @@ class LaraveltravelController extends Controller
     // }
     public function show()
     {
-        //
+        return view('laraveltravel.Game_test.game_test_harajuku');
     }
 
 

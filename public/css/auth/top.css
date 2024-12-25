@@ -1,0 +1,130 @@
+body{
+    width: 100%;
+    font-family: "Zen Kaku Gothic New", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #444444;
+  }
+
+  .logo{
+    font-family: "Aldrich", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+  }
+  .footer-logo{
+    font-family: "Aldrich", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  header {
+    height: 4rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    justify-items: end;
+    align-items: center;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    background-color: #78BBE6;
+    color: white;
+  }
+
+  header h1 {
+    margin: 0; /* 余白をリセット */
+    grid-column: 2;
+  }
+
+  header a {
+    font-size: 12px;
+    background-color: #F99F48;
+    height: 30px;
+    width: 100px;
+    margin-left: 20px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    line-height: 30px;
+  }
+
+  /* メインビジュアルについて下に記載 */
+  .mainvisual h1{
+    margin: 0;
+    font-size: 40px;
+    font-weight: 100;
+    margin-left: 20px;
+    padding-top: 250px;
+    color: rgb(50, 50, 50);
+  }
+
+  .mainvisual p{
+    font-size: 25px;
+    letter-spacing: 2px;
+    margin-left: 20px;
+  }
+
+  .mainvisual {
+  background: url("../../img/lasvegas/bgimg.jpg");
+  background-size: cover;
+  height: 547px;
+  color: rgb(50, 50, 50);
+  text-align: center;
+  }
+
+  .form-wrapper{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    height: 70px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+ .form-wrapper a{
+    font-size: 16px;
+    background-color: #F99F48;
+    height: 40px;
+    width: 250px;
+    margin-left: 20px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    line-height: 40px;
+ }
+
+ .form-wrapper p{
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+ }
+
+ footer{
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  footer h2{
+    font-size: 1rem;
+    color: #bcb5b5;
+  }
+
+  footer p{
+    font-size: 0.75rem;
+  }
+
+  .footer-icon{
+    display: flex;
+    margin-left: auto;
+  }
+
+  footer img{
+    width: 1.5rem;
+    margin-left: 0.5rem;
+  }

@@ -20,4 +20,6 @@
     </div>
   </div>
 
+  <script src="{{asset('js/laraveltravel/create.js')}}"></script>
+
 </x-app-layout>

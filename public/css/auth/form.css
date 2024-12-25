@@ -1,0 +1,37 @@
+.logo{
+    font-family: "Aldrich", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+  }
+
+.form-wrapper {
+    min-height: 100vh; /* min-h-screen */
+    display: flex; /* flex */
+    flex-direction: column; /* flex-col */
+    justify-content: flex-start; /* デフォルトは上詰め */
+    align-items: center; /* items-center */
+    padding-top: 1.5rem; /* pt-6 */
+    background-color: #78BBE6;
+
+    /* スクリーンサイズが小さくない場合 (sm) */
+    @media (min-width: 640px) {
+        justify-content: center; /* sm:justify-center */
+        padding-top: 0; /* sm:pt-0 */
+    }
+}
+
+.form-content {
+    width: 100%; /* w-full */
+    margin-top: 1.5rem; /* mt-6 */
+    padding: 1.5rem 1.5rem; /* px-6 py-4 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+    overflow: hidden; /* overflow-hidden */
+    background-color: #D5EEFF;
+
+    /* スクリーンサイズが小さくない場合 (sm) */
+    @media (min-width: 640px) {
+        max-width: 28rem; /* sm:max-w-md (28rem = 448px) */
+        border-radius: 0.5rem; /* sm:rounded-lg (0.5rem = 8px) */
+    }
+}
