@@ -25,39 +25,57 @@ class QuizGameService implements GameServiceInterface
     public function initializeGame(array $params): ?array
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($params) {
+                // クイズゲーム固定ID=2を使用、なければ作成
+                $game = Game::firstOrCreate(
+                    ['id' => 2],
+                    [
+                        'game_name' => 'quiz',
+                        'base_score' => config('quiz.base_score', 20),
+                        'config_json' => json_encode(['type' => 'quiz']),
+                        'detail_id' => null
+                    ]
+                );
 
-            // ゲーム設定の構成
-            $gameDetail = $this->createGameDetail($params['region_id'], $params['category_id']);
-            
-            // ゲームインスタンスの作成
-            $game = $this->createGameInstance($gameDetail->id);
+                // 作成したゲームが確実にコミットされるのを待つ
+                DB::commit();
+                DB::beginTransaction();
 
-            // クイズの取得と検証
-            $quizzes = $this->getRandomQuizzes(
-                $params['region_id'],
-                $params['category_id'],
-                $gameDetail->json['quiz_config']['questions_per_game']
-            );
+                // GameDetailの作成
+                $gameDetail = GameDetail::create([
+                    'json' => [
+                        'region_id' => $params['region_id'],
+                        'category_id' => $params['category_id']
+                    ]
+                ]);
 
-            if ($quizzes->isEmpty()) {
-                DB::rollBack();
-                return null;
-            }
+                // UserGameの作成
+                UserGame::create([
+                    'user_id' => $this->getUserId(),
+                    'game_id' => $game->id,
+                    'status' => 'in_progress',
+                    'score' => 0,
+                    'detail_id' => $gameDetail->id
+                ]);
 
-            // ユーザーのゲーム参加記録を作成
-            $this->createUserGameRecord($game->id, $gameDetail->id);
+                // ランダムな問題を取得
+                $quizzes = $this->getRandomQuizzes(
+                    $params['region_id'],
+                    $params['category_id'],
+                    config('quiz.questions_per_game', 5)
+                );
 
-            DB::commit();
-
-            return [
-                'game_id' => $game->id,
-                'quizzes' => $quizzes,
-                'config' => $gameDetail->json['quiz_config']
-            ];
+                return [
+                    'game_id' => $game->id,
+                    'quizzes' => $quizzes
+                ];
+            });
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            \Log::error('Game initialization failed:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             return null;
         }
     }
@@ -90,10 +108,35 @@ class QuizGameService implements GameServiceInterface
      */
     public function finalizeGame(array $gameState): array
     {
+        $userId = $this->getUserId();
+        
+        \Log::debug('Session Data:', [
+            'all' => session()->all(),
+            'test_mode' => session('test_mode'),
+            'user_id' => session('user_id')
+        ]);
+
+        \Log::debug('Game State:', [
+            'state' => $gameState,
+            'user_id' => $userId
+        ]);
+
         $userGame = UserGame::where([
             'game_id' => $gameState['game_id'],
-            'user_id' => auth()->id()
+            'user_id' => $userId
         ])->first();
+
+        \Log::debug('User Game Query:', [
+            'conditions' => [
+                'game_id' => $gameState['game_id'],
+                'user_id' => $userId
+            ],
+            'result' => $userGame ? $userGame->toArray() : null
+        ]);
+
+        if (!$userGame) {
+            throw new \Exception('ユーザーゲーム情報が見つかりません。');
+        }
 
         $correctAnswers = collect($gameState['answers'])
             ->filter(fn($answer) => $answer['is_correct'])
@@ -151,21 +194,28 @@ class QuizGameService implements GameServiceInterface
         ]);
     }
 
-    private function createGameInstance(int $detailId): Game
-    {
-        return Game::create([
-            'game_name' => 'quiz',
-            'base_score' => config('quiz.base_score', 100),
-            'config_json' => ['type' => 'quiz'],
-            'detail_id' => $detailId
-        ]);
-    }
+    // 下記メソッドは不要 削除予定
+    // private function createGameInstance(int $detailId): Game
+    // {
+    //     return Game::create([
+    //         'game_name' => 'quiz',
+    //         'base_score' => config('quiz.base_score', 100),
+    //         'config_json' => ['type' => 'quiz'],
+    //         'detail_id' => $detailId
+    //     ]);
+    // }
 
     private function createUserGameRecord(int $gameId, int $detailId): void
     {
+        $userId = $this->getUserId();
+        
+        if (!$userId) {
+            throw new \Exception('ユーザーが認証されていません。');
+        }
+
         UserGame::create([
-            'user_id' => auth()->id(),
-            'game_id' => $gameId,
+            'user_id' => $userId,
+            'game_id' => 2, // クイズゲーム固定ID
             'status' => 'in_progress',
             'score' => 0,
             'detail_id' => $detailId
@@ -206,10 +256,20 @@ class QuizGameService implements GameServiceInterface
     private function generateAwardImagePath(int $regionId, int $categoryId): string
     {
         return sprintf(
-            'awards/%d_%d_%s.jpg',
+            'img/quiz/awards_%d_%d_%s.jpg',
             $regionId,
             $categoryId,
-            now()->format('Ymd_His')
+            // now()->format('Ymd_His')
+            'default'
         );
+    }
+
+    private function getUserId(): int
+    {
+        // テストモード時のユーザーID取得ロジックを追加
+        if (app()->environment('local') && session('test_mode')) {
+            return session('user_id', 1);
+        }
+        return auth()->id();
     }
 }

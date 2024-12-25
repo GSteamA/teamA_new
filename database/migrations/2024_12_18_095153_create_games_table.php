@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('games', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary(); 
             $table->string('game_name');
             $table->integer('base_score');
             $table->json('config_json')->nullable();

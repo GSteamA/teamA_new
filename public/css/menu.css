@@ -1,4 +1,20 @@
 
+.quiz-menu-header {
+  color: var(--navy-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-menu-error {
+  background-color: #FEE2E2;
+  border: 1px solid #FCA5A5;
+  color: #DC2626;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+}
+
 .quiz-menu-title {
   color: #4072B3;
 }
