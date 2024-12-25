@@ -12,7 +12,7 @@
         #map {
             height: 600px;
             width: 100%;
-            background-color: #f5f5f5;
+            background-color: #78BBE6;
         }
         .marker-content {
             background-color: #4a5568;
@@ -56,8 +56,8 @@
         // await map.addSampleMarkers();
 
         const locations = [
-            { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' , url: "#"},
-            { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' , url: "#"},
+            { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' , url: '/harajuku'},
+            { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' , url: 'menu'},
             { lat: 36.147685, lng: -115.15651, title: 'ラスベガス', url: 'dashboard'}                 ];
             map.addSampleMarker();
             map.addMarker(locations);
