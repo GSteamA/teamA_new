@@ -12,7 +12,7 @@
   <!-- jQueryをインポート -->
   <script src="{{asset('js/lasvegas/jquery-2.1.3.min.js')}}"></script>
   <!-- 画像を取得して表示するjsファイル -->
-  <script src="{{asset('js/showpicture/create.js')}}"></script>
+  {{-- <script src="{{asset('js/showpicture/create.js')}}"></script> --}}
   <!-- 棚を表示するjsファイル -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
