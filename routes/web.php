@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 // ログイン後の画面を表示
-Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 //ユーザー認証ずみのユーザーのみ表示可能
 Route::middleware('auth')->group(function () {
@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     //原宿ゲーム
     Route::get('/harajuku', function () {return view('quiz.wellcome');})->name('quiz.wellcome');
+    Route::get('/hakata', function () {return view('quiz.hakatawellcome');})->name('quiz.hakatawellcome');
     // クイズ機能に関するルートをグループ化
     Route::prefix('quiz')->name('quiz.')->controller(QuizGameController::class)->group(function () {
     Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
@@ -46,5 +47,13 @@ Route::middleware('auth')->group(function () {
     Route::get('award/{gameId}', 'showAward')->name('award'); // 表彰状表示
     });
 });
+
+
+// 開発環境専用のテストルート
+if (app()->environment('local')) {
+    Route::get('/quiz/test-driver', [QuizTestController::class, 'showTestDriver'])->name('quiz.test-driver');
+    Route::post('/quiz/test-login', [QuizTestController::class, 'testLogin'])->name('quiz.test-login');
+}
+
 
 require __DIR__.'/auth.php';

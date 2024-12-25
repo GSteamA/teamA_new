@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url('css/quiz/reset.css') }}">
-    <link rel="stylesheet" href="{{ url('css/quiz/harajuku-wellcome.css') }}">
+    <link rel="stylesheet" href="{{ url('css/quiz/hakata-wellcome.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -12,13 +12,13 @@
 </head>
 <body>
 <div class="wrapper">
-  <h1>Welcome to Harajuku Quiz !!!</h1>
+  <h1>Welcome to Hakata Quiz !!!</h1>
   <p>クイズをクリアして、記念写真をゲットしよう</p>
   <div class="game-rule">
-    <h2>原宿クイズ</h2>
+    <h2>博多クイズ</h2>
     <h3>♦︎基本ルール</h3>
     <p>
-    原宿についてクイズ形式で答えてみよう！<br>
+    についてクイズ形式で答えてみよう！<br>
     クイズのジャンルを選んで、そのジャンルのクイズを解いてみよう！<br>
     クイズのジャンルは、「文化」「歴史」「ことば」「人物」「経済」の5つから選べます。<br>
     <br>
@@ -29,7 +29,7 @@
     【ジャンルごとに異なる記念写真】<br>
     クリアすると、ジャンルごとに異なる記念写真がゲットできます。<br>
     ゲットした写真は、マイページから確認できます。<br>
-    ぜひ、全種類の写真をゲットして、あなたの原宿ライフを本棚に飾りましょう。<br>
+    ぜひ、全種類の写真をゲットして、あなたの博多ライフを本棚に飾りましょう。<br>
     </p>
   </div>
   <div class="announce">
@@ -40,7 +40,7 @@
         </div>
   </div>
   <!-- <a href="{{ route('quiz.menu', ['region' => 'harajuku']) }}" class="start-button">スタート</a> -->
-  <a href="{{ route('quiz.menu', 'harajuku') }}">スタート</a>
+  <a href="{{ route('quiz.menu', 'hakata') }}">スタート</a>
 </div>
 </body>
 </html>

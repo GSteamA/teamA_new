@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'クイズアプリ')</title>
-    
-    <!-- @vite(['public/css/quiz/menu.css','public/js/quiz/menu.js']) -->
+
     <link rel="stylesheet" href="{{ asset('css/quiz/menu.css') }}">
     <script src="{{ asset('js/quiz/menu.js') }}" defer></script>
     @yield('additional_css')
