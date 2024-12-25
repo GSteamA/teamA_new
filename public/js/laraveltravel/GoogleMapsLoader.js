@@ -22,7 +22,7 @@ export class GoogleMapsLoader {
     //Jqueryだと非同期の処理がうまくいかない？疑惑のため、vanila Javascriptで記述
       return new Promise((resolve, reject) => {
           const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${this.GOOGLE_MAPS_API_KEY}&v=beta`;
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${this.GOOGLE_MAPS_API_KEY}&v=beta&libraries=marker`;
           script.async = true;
           script.defer = true;
           script.addEventListener('load', () => resolve());
