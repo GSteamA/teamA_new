@@ -24,12 +24,24 @@ export class MarkerManager {
         this.logDebug('addSampleMarkers', locations);
 
         locations.forEach(location => {
-            const markerContent = this.createMarkerContent(location.title);
-            const marker = new this.MarkerClass({
+            // const markerContent = this.createMarkerContent(location.title);
+            // const marker = new this.MarkerClass({
+            //     map: this.map,
+            //     position: location,
+            //     content: markerContent
+            // });
+            const pin = new google.maps.marker.PinElement({
+                scale: 1.0,  // マーカーの大きさ( 等倍: 1)
+                background: '#FFFFE8', // マーカーの色
+                borderColor: '#DDAC0C', // マーカーの輪郭の色
+                glyphColor: '#70AEDA', // グリフの色
+                // glyph: '', // グリフを非表示にする場合
+              });
+              const marker = new google.maps.marker.AdvancedMarkerElement({
                 map: this.map,
                 position: location,
-                content: markerContent
-            });
+                content: pin.element, // カスタマイズしたマーカーの要素をセット
+              });
 
             marker.addListener('click', () => {
                 this.handleMarkerClick(location);

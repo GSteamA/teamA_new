@@ -14,13 +14,32 @@
             width: 100%;
             background-color: #78BBE6;
         }
+        
         .marker-content {
-            background-color: #4a5568;
-            color: white;
-            padding: 8px 16px;
+                    position: absolute;
+            left: 100%;
+            bottom: 0;
+            margin-left: 8px;
+            padding: 4px 8px;
+            /* background-color: rgba(255, 255, 255, 0.8); */
             border-radius: 4px;
-            font-family: sans-serif;
+            white-space: nowrap;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color:rgb(225, 125, 26);
+            /* 太字に設定 */
+            font-weight: bold;
+            /* 初期状態では非表示 */
+            /* opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease; */
         }
+
+  /* .marker:hover .marker-content  {
+  opacity: 1;
+  visibility: visible;
+} */
+
     </style>
 </head>
 <body>
