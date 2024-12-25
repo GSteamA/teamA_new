@@ -141,7 +141,7 @@
             
             if (currentQuestionIndex >= quizzes.length) {
                 console.error('Quiz index out of bounds');
-                window.location.href = '{{ route("Quiz.result") }}';
+                window.location.href = '{{ route("quiz.result") }}';
                 return;
             }
             
@@ -170,7 +170,7 @@
         async function submitAnswer(quizId, answerId) {
             console.log('Submitting answer:', { quizId, answerId });
             try {
-                const response = await fetch('{{ route("Quiz.submit-answer") }}', {
+                const response = await fetch('{{ route("quiz.submit-answer") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -207,7 +207,7 @@
             const nextButton = document.getElementById('next-button');
             nextButton.onclick = () => {
                 if (result.is_last_question) {
-                    window.location.href = '{{ route("Quiz.result") }}';
+                    window.location.href = '{{ route("quiz.result") }}';
                 } else {
                     currentQuestionIndex++;
                     displayQuestion();

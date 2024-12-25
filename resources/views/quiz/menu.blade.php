@@ -11,7 +11,7 @@
     @foreach($categories as $category)
     <div class="quiz-category-section">
         <h2 class="category-title">{{ $category->display_name }}</h2>
-        <form action="{{ route('Quiz.start') }}" method="POST">
+        <form action="{{ route('quiz.start') }}" method="POST">
             @csrf
             <input type="hidden" name="region_id" value="{{ $region->id }}">
             <input type="hidden" name="region_name" value="{{ $region->display_name }}">

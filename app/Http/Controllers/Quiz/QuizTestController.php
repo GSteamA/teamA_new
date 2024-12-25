@@ -33,7 +33,7 @@ class QuizTestController extends Controller
 
         \Log::debug('Test Session Created:', session()->all());
 
-        return redirect()->route('Quiz.menu', ['region' => $request->region])
+        return redirect()->route('quiz.menu', ['region' => $request->region])
             ->with('success', 'テストセッションを開始しました');
     }
 } 

@@ -15,8 +15,12 @@ Route::get('/lasve', function () {
     return view('lasvegas.welcome');
 });
 
+Route::get('/harajuku', function () {
+    return view('quiz.wellcome');
+})->name('quiz.wellcome');
+
 // クイズ機能に関するルートをグループ化
-Route::prefix('quiz')->name('Quiz.')->controller(QuizGameController::class)->group(function () {
+Route::prefix('quiz')->name('quiz.')->controller(QuizGameController::class)->group(function () {
     Route::get('menu/{region}', 'showMenu')->name('menu'); // メニュー表示
     Route::post('start', 'startGame')->name('start'); // ゲーム開始
     Route::post('submit-answer', 'submitAnswer')->name('submit-answer'); // 回答提出
@@ -52,8 +56,8 @@ Route::middleware('auth')->group(function () {
 
 // 開発環境専用のテストルート
 if (app()->environment('local')) {
-    Route::get('/quiz/test-driver', [QuizTestController::class, 'showTestDriver'])->name('Quiz.test-driver');
-    Route::post('/quiz/test-login', [QuizTestController::class, 'testLogin'])->name('Quiz.test-login');
+    Route::get('/quiz/test-driver', [QuizTestController::class, 'showTestDriver'])->name('quiz.test-driver');
+    Route::post('/quiz/test-login', [QuizTestController::class, 'testLogin'])->name('quiz.test-login');
 }
 
 require __DIR__.'/auth.php';
