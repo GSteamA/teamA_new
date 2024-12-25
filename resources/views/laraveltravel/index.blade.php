@@ -54,12 +54,11 @@
         //     map.addMarker(locations);
         // });
         // await map.addSampleMarkers();
- console.log("テスト"+"{{ route('game_test_harajuku') }}");
+
         const locations = [
-            { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' , url: "{{ route('game_test_harajuku') }}"},
-            { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' , url: "{{ route('game_test_harajuku') }}"},
-            { lat: 36.147685, lng: -115.15651, title: 'ラスベガス' , url: "{{ route('game_test_harajuku') }}"}     
-            ];
+            { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' , url: "#"},
+            { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' , url: "#"},
+            { lat: 36.147685, lng: -115.15651, title: 'ラスベガス', url: 'dashboard'}                 ];
             map.addSampleMarker();
             map.addMarker(locations);
         // map.addSampleMarker();
