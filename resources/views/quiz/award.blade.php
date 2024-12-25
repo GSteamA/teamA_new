@@ -18,7 +18,8 @@
         </div>
 
         <div class="action-buttons">
-            <a href="{{ route('quiz.menu', ['region' => session('last_region', 'harajuku')]) }}" class="menu-button">
+            <!-- <a href="{{ route('quiz.menu', ['region' => session('last_region', 'harajuku')]) }}" class="menu-button"> -->
+            <a href="{{ route('laraveltravel.index') }}" class="menu-button">
                 メニューに戻る
             </a>
             <button onclick="window.print()" class="print-button">
