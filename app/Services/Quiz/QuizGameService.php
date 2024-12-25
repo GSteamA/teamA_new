@@ -25,49 +25,54 @@ class QuizGameService implements GameServiceInterface
     public function initializeGame(array $params): ?array
     {
         try {
-            DB::beginTransaction();
+            return DB::transaction(function () use ($params) {
+                // クイズゲーム固定ID=2を使用、なければ作成
+                $game = Game::firstOrCreate(
+                    ['id' => 2],
+                    [
+                        'game_name' => 'quiz',
+                        'base_score' => config('quiz.base_score', 20),
+                        'config_json' => json_encode(['type' => 'quiz']),
+                        'detail_id' => null
+                    ]
+                );
 
-            //デバグ用
-            // dd([
-            //     'params' => $params,
-            //     'region_id' => $params['region_id'] ?? 'null',
-            //     'category_id' => $params['category_id'] ?? 'null'
-            // ]);
+                // 作成したゲームが確実にコミットされるのを待つ
+                DB::commit();
+                DB::beginTransaction();
 
-            // ゲーム設定の構成
-            $gameDetail = $this->createGameDetail($params['region_id'], $params['category_id']);
-            // ゲームインスタンスの作成
-            $game = $this->createGameInstance($gameDetail->id);
-            // dd($game);
+                // GameDetailの作成
+                $gameDetail = GameDetail::create([
+                    'json' => [
+                        'region_id' => $params['region_id'],
+                        'category_id' => $params['category_id']
+                    ]
+                ]);
 
-            // クイズの取得と検証
-            $quizzes = $this->getRandomQuizzes(
-                $params['region_id'],
-                $params['category_id'],
-                $gameDetail->json['quiz_config']['questions_per_game']
-            );
-            // dd($quizzes);
+                // UserGameの作成
+                UserGame::create([
+                    'user_id' => $this->getUserId(),
+                    'game_id' => $game->id,
+                    'status' => 'in_progress',
+                    'score' => 0,
+                    'detail_id' => $gameDetail->id
+                ]);
 
-            if ($quizzes->isEmpty()) {
-                DB::rollBack();
-                return null;
-            }
+                // ランダムな問題を取得
+                $quizzes = $this->getRandomQuizzes(
+                    $params['region_id'],
+                    $params['category_id'],
+                    config('quiz.questions_per_game', 5)
+                );
 
-            // ユーザーのゲーム参加記録を作成
-            $this->createUserGameRecord($game->id, $gameDetail->id);
-
-            DB::commit();
-
-            // dd($gameDetail->json['quiz_config']);
-            return [
-                'game_id' => $game->id,
-                'quizzes' => $quizzes,
-                'config' => $gameDetail->json['quiz_config']
-            ];
+                return [
+                    'game_id' => $game->id,
+                    'quizzes' => $quizzes
+                ];
+            });
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            dd([
+            \Log::error('Game initialization failed:', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -189,29 +194,28 @@ class QuizGameService implements GameServiceInterface
         ]);
     }
 
-    private function createGameInstance(int $detailId): Game
-    {
-        return Game::create([
-            'game_name' => 'quiz',
-            'base_score' => config('quiz.base_score', 100),
-            'config_json' => ['type' => 'quiz'],
-            'detail_id' => $detailId
-        ]);
-    }
+    // 下記メソッドは不要 削除予定
+    // private function createGameInstance(int $detailId): Game
+    // {
+    //     return Game::create([
+    //         'game_name' => 'quiz',
+    //         'base_score' => config('quiz.base_score', 100),
+    //         'config_json' => ['type' => 'quiz'],
+    //         'detail_id' => $detailId
+    //     ]);
+    // }
 
     private function createUserGameRecord(int $gameId, int $detailId): void
     {
-        // 開発環境でのみテストユーザーIDを使用
-        $userId = app()->environment('local') ? 1 : auth()->id();
+        $userId = $this->getUserId();
         
         if (!$userId) {
             throw new \Exception('ユーザーが認証されていません。');
         }
 
         UserGame::create([
-            // 'user_id' => auth()->id(),
-            'user_id' => $userId, // 開発環境でのみテストユーザーIDを使用
-            'game_id' => $gameId,
+            'user_id' => $userId,
+            'game_id' => 2, // クイズゲーム固定ID
             'status' => 'in_progress',
             'score' => 0,
             'detail_id' => $detailId
