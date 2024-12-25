@@ -30,12 +30,14 @@ class QuizGameController extends Controller
      */
     public function showMenu(Request $request)
     {
+        \Log::info('Accessing showMenu with region:', ['region' => $request->region]);
         // QuizGameServiceのメソッドを使用して地域情報を取得・検証
         $region = $this->quizService->validateAndGetRegion($request->region);
         // dd($request);
         if (!$region) {
             // デフォルトの地域コード（原宿）を指定してリダイレクト（前のページに戻す）
-            return redirect()->route('quiz.menu', ['region' => 'harajuku'])
+            // return redirect()->route('quiz.menu', ['region' => 'harajuku'])
+            return redirect()->route('quiz.wellcome')
                 ->with('error', '指定された地域が見つかりません。');
         }
     

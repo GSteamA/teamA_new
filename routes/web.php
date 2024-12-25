@@ -47,4 +47,12 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+
+// 開発環境専用のテストルート
+if (app()->environment('local')) {
+    Route::get('/quiz/test-driver', [QuizTestController::class, 'showTestDriver'])->name('quiz.test-driver');
+    Route::post('/quiz/test-login', [QuizTestController::class, 'testLogin'])->name('quiz.test-login');
+}
+
+
 require __DIR__.'/auth.php';
