@@ -102,6 +102,7 @@ function finishGame(){
 function overGame(){
     $("#message").css("opacity","1");
     $("#message").html("GAME OVER...");
+    dogAnnounce("GAME OVER...<br>もう一度挑戦してみよう！");
     setTimeout(() => {location.reload();}, 2000) //2秒後にリロード;
 };
 
@@ -121,9 +122,11 @@ function winGame(message){
     $("#message").html(message);
     $("#credit_area").text(Number(window.credit) + Number(window.selectBet)*2);
     $("#bet").text(0);
+    dogAnnounce("That's how it is! Try betting more money! <br>（その調子！もっとお金を賭けてみよう！）");
     tipImg2();
     const audio3 = $("#win")[0];
     audio3.play();
+    checkClear(Number($("#credit_area").text()));
     sendScore();
     finishGame();
     };
@@ -135,6 +138,7 @@ function loseGame(message){
     $("#message").css("opacity","1");
     $("#message").html(message);
     $("#bet").text(0);
+    dogAnnounce("Don't give up! Try again! <br>（諦めないで！もう一度挑戦してみよう！）");
     $(".tip1").attr("src", "img/lasvegas/toumei.png");
     const audio4 = $("#lose")[0];
     audio4.play();
@@ -149,21 +153,24 @@ function drawGame(message){
     $("#message").html(message);
     $("#credit_area").text(Number(window.credit) + Number(window.selectBet));
     $("#bet").text(0);
+    dogAnnounce("It's a draw! Let's try again! <br>（引き分けだ！もう一度挑戦してみよう！）");
     finishGame();
     };
 
-//サレンダーのときの関数
-function surrenderGame(){
-    $("#dealer_2_2").css("display", "none");
-    $("#dealer_score").html(window.dealerScore);
+
+    //サレンダーのときの関数
+    function surrenderGame(){
+        $("#dealer_2_2").css("display", "none");
+        $("#dealer_score").html(window.dealerScore);
     $("#message").css("opacity","1");
     $("#message").html("You pay "+Number(window.selectBet) / 2+"＄");
     $("#credit_area").text(Number(window.credit) + Number(window.selectBet)/2);
     $("#bet").text(0);
+    dogAnnounce("You can't win every time! Let's try again! <br>（いつも勝つことはできない！もう一度挑戦してみよう！）");
     const audio4 = $("#lose")[0];
     audio4.play();
     finishGame();
-    };
+};
 
 //プレイヤーのスコアが21点になったときの処理
 function ruleScore21() {
@@ -172,6 +179,11 @@ function ruleScore21() {
     } else {
         winGame("BLACK JACK!!!YOU WIN!!!");
     };
+};
+
+//犬のアナウンスの言葉を変える関数
+function dogAnnounce(message){
+    $("#announce-msg").html(message);
 };
 
 //スコアを送信する関数
@@ -193,6 +205,29 @@ async function sendScore(){
         console.log('ゲームデータが保存されました:', data.game);
     } else {
         console.error('エラーが発生しました');
+    }
+}
+
+//クリアしたら通知する関数
+function checkClear(score) {
+    if (score >= 80) {
+      Swal.fire({
+        title: 'Congratulations! Clear the game!',
+        text: `score: ${score}ドル`,
+        icon: 'success',
+        text: `記念写真をゲットしました！ホーム画面から確認してね！`,
+        showConfirmButton: true,
+        confirmButtonText: '戻る',
+        customClass: {
+            title: 'clear-title', // タイトル用のカスタムクラス
+            htmlContainer: 'clear-text', // テキスト用のカスタムクラス
+            icon: 'clear-icon', // タイトル用のカスタムクラス
+            popup: 'clear-popup', // ポップアップ全体のカスタムクラス
+            confirmButton: 'clear-button' // ボタンのカスタムクラス
+          }
+    }).then(() => {
+        // 何も処理しないことで通知を閉じるだけにする
+      });
     }
 }
 
@@ -278,12 +313,14 @@ window.selectBet = undefined; // グローバル変数として定義
 $(document).on("click", ".start", function () {
     window.selectBet = Number($(this).val());
     window.credit = Number($("#credit_area").text());
-    tipImg1();
     if (window.selectBet > window.credit) {
         playBu();
+        dogAnnounce("You don't have enough money... <br> （お金が足りないよ😢）");
         return
     } else if (window.selectBet <= window.credit) {
+        tipImg1();
         playCharin();
+        dogAnnounce("カードの合計を21に近づけよう！もう一枚引くならHIT、今の手札で勝負するならSTAND、降参ならSURRENDERを選んでね！");
         $("#bet").text(window.selectBet);
         $("#credit_area").text(window.credit - window.selectBet);
         window.credit = Number($("#credit_area").text());

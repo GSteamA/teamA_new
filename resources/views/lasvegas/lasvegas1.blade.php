@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url('css/lasvegas/lasvegas1.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400..900&family=Hachi+Maru+Pop&family=Montserrat+Alternates:wght@100;200;300;400&family=Poiret+One&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Maru+Gothic&family=Zen+Old+Mincho&display=swap" rel="stylesheet">
     <title>LasVegas|LaravelTravel</title>
 </head>
 <body>
 <div class="wrapper">
-  <h1>Welcome to Las Vegas !!!</h1>  
-  <p>ゲームをクリアして、記念写真を撮影しよう</p>
+  <h1>Welcome to Las Vegas !!!</h1>
+  <p>ゲームをクリアして、記念写真をゲットしよう</p>
   <div class="game-rule">
     <h2>Black Jack ゲーム</h2>
     <h3>♦︎基本ルール</h3>
