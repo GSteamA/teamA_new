@@ -9,6 +9,7 @@ use App\Models\Quiz\QuizCategory;
 use Illuminate\Http\Request;
 use App\Http\Requests\Quiz\StartGameRequest;
 use App\Http\Requests\Quiz\SubmitAnswerRequest;
+use App\Models\UserGame;
 
 class QuizGameController extends Controller
 {
@@ -31,24 +32,20 @@ class QuizGameController extends Controller
     {
         // QuizGameServiceのメソッドを使用して地域情報を取得・検証
         $region = $this->quizService->validateAndGetRegion($request->region);
+        // dd($request);
         if (!$region) {
-            return redirect()->route('home')
+            // デフォルトの地域コード（原宿）を指定してリダイレクト（前のページに戻す）
+            return redirect()->route('Quiz.menu', ['region' => 'harajuku'])
                 ->with('error', '指定された地域が見つかりません。');
         }
-
-        // その地域で利用可能なカテゴリーを取得
+    
+        // その地域で利用可能なカテゴリーを��
         $categories = $this->quizService->getAvailableCategories($region->id);
-
-        // return view('quiz.menu', [
-        //     'region' => $region,
-        //     'categories' => $categories
-        // ]);
-
-        // テスト用に変更：ビューの代わりにデータを返す
-        return [
+    
+        return view('quiz.menu', [
             'region' => $region,
             'categories' => $categories
-        ];
+        ]);
     }
 
     /**
@@ -60,6 +57,15 @@ class QuizGameController extends Controller
      */
     public function startGame(StartGameRequest $request)
     {
+        //デバグ用
+        // dd([
+        //     'request_all' => $request->all(),
+        //     'region_id' => $request->region_id,
+        //     'category_id' => $request->category_id,
+        //     'region_name' => $request->region_name,
+        //     'category_name' => $request->category_name
+        // ]);
+
         // ゲームの初期化
         $gameConfig = $this->quizService->initializeGame([
             'region_id' => $request->region_id ?? 1,
@@ -68,8 +74,8 @@ class QuizGameController extends Controller
 
         // dd($gameConfig ?? 'null');
         if (!$gameConfig) {
-            return redirect()->route('quiz.menu')
-                ->with('error', 'クイズの準備に失敗しました。');
+            return redirect()->route('Quiz.menu', ['region' => session('last_region', 'default')])
+            ->with('error', 'クイズの準備に失敗しました。');
         }
 
         // セッションにゲーム状態を保存
@@ -87,12 +93,7 @@ class QuizGameController extends Controller
             'region' => $request->region_name,
             'category' => $request->category_name
         ]);
-        // return [
-        //     'gameConfig' => $gameConfig,
-        //     // 'quizzes' => $gameConfig['quizzes'],
-        //     'region' => $request->region_name,
-        //     'category' => $request->category_name
-        // ];
+
     }
 
     /**
@@ -152,9 +153,46 @@ class QuizGameController extends Controller
 
         // 表彰の条件を満たしている場合は表彰画面へリダイレクト
         if ($result['qualified_for_award']) {
-            return redirect()->route('quiz.award', ['game_id' => $quizState['game_id']]);
+            return redirect()->route('Quiz.award', ['gameId' => $quizState['game_id']]);
         }
 
         return view('quiz.result', compact('result'));
+    }
+
+    public function showAward(int $gameId)
+    {
+        $userGame = UserGame::with(['gameDetail'])
+            ->where('game_id', $gameId)
+            ->where('user_id', $this->getUserId())
+            ->first();
+
+        if (!$userGame) {
+            return redirect()->route('Quiz.menu', ['region' => session('last_region', 'harajuku')])
+                ->with('error', '表彰状の表示に失敗しました。');
+        }
+
+        // GameDetailから地域IDとカテゴリーIDを取得
+        $gameDetail = $userGame->gameDetail;
+        $config = is_string($gameDetail->json) ? json_decode($gameDetail->json, true) : $gameDetail->json;
+        
+        // 静的な画像ファイルのパスを生成
+        $imagePath = sprintf('img/quiz/award_%d_%d_default.jpg', 
+            $config['region_id'], 
+            $config['category_id']
+        );
+
+        return view('quiz.award', [
+            'result' => [
+                'award_image' => $imagePath
+            ]
+        ]);
+    }
+
+    private function getUserId(): int
+    {
+        if (app()->environment('local') && session('test_mode')) {
+            return session('user_id', 1);
+        }
+        return auth()->id();
     }
 }

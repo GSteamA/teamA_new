@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Game extends Model
 {
     protected $fillable = [
+        'id',
         'game_name',
         'base_score',
         'config_json',
         'detail_id'
     ];
+
+    public $incrementing = false;
 
     protected $casts = [
         'config_json' => 'array'
