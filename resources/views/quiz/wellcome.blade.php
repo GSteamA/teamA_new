@@ -39,6 +39,7 @@
           <p id="announce-msg">最初にジャンルを選択！<br>5問中5問回答できたらクリアだよ！</p>
         </div>
   </div>
+  <!-- <a href="{{ route('quiz.menu', ['region' => 'harajuku']) }}" class="start-button">スタート</a> -->
   <a href="{{ route('quiz.menu', 'harajuku') }}">スタート</a>
 </div>
 </body>
