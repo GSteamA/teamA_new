@@ -36,12 +36,19 @@ export class MarkerManager {
                 borderColor: '#DDAC0C', // マーカーの輪郭の色
                 glyphColor: '#70AEDA', // グリフの色
                 // glyph: '', // グリフを非表示にする場合
+                // clickable: false // クリックを無効にする。のだがなぜかpinもなくなる
               });
               const marker = new google.maps.marker.AdvancedMarkerElement({
                 map: this.map,
                 position: location,
                 content: pin.element, // カスタマイズしたマーカーの要素をセット
               });
+
+            //   pin.addListener('click', () => {
+            //     this.handleMarkerClick(location);
+            // });
+
+
 
             marker.addListener('click', () => {
                 this.handleMarkerClick(location);
