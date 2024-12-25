@@ -18,8 +18,8 @@ export class MarkerManager {
         const locations = [
             { lat: 35.669515, lng: 139.702954, title: 'ジーズアカデミー東京' },
             { lat: 33.586843, lng: 130.394501, title: 'ジーズアカデミー福岡' },
-            { lat: 36.147685, lng: -115.15651, title: 'ラスベガス' }     
-            ];
+            { lat: 36.147685, lng: -115.15651, title: 'ラスベガス' } 
+                    ];
 
         this.logDebug('addSampleMarkers', locations);
 
