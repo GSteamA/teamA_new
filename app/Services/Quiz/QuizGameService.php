@@ -110,51 +110,57 @@ class QuizGameService implements GameServiceInterface
     {
         $userId = $this->getUserId();
         
-        \Log::debug('Session Data:', [
-            'all' => session()->all(),
-            'test_mode' => session('test_mode'),
-            'user_id' => session('user_id')
+        \Log::debug('Starting finalizeGame:', [
+            'gameState' => $gameState,
+            'userId' => $userId
         ]);
 
-        \Log::debug('Game State:', [
-            'state' => $gameState,
-            'user_id' => $userId
-        ]);
-
+        // 進行中のゲームのみを取得するように修正
         $userGame = UserGame::where([
             'game_id' => $gameState['game_id'],
-            'user_id' => $userId
-        ])->first();
+            'user_id' => $userId,
+            'status' => 'in_progress'  // この条件を追加
+        ])
+        ->orderBy('created_at', 'desc')  // 最新のレコードを取得
+        ->first();
 
-        \Log::debug('User Game Query:', [
-            'conditions' => [
+        \Log::debug('UserGame found:', [
+            'userGame' => $userGame ? $userGame->toArray() : null,
+            'query' => [
                 'game_id' => $gameState['game_id'],
-                'user_id' => $userId
-            ],
-            'result' => $userGame ? $userGame->toArray() : null
+                'user_id' => $userId,
+                'status' => 'in_progress'
+            ]
         ]);
 
         if (!$userGame) {
-            throw new \Exception('ユーザーゲーム情報が見つかりません。');
+            \Log::error('Active game session not found:', [
+                'game_id' => $gameState['game_id'],
+                'user_id' => $userId
+            ]);
+            throw new \Exception('アクティブなゲームセッションが見つかりません。');
         }
 
         $correctAnswers = collect($gameState['answers'])
             ->filter(fn($answer) => $answer['is_correct'])
             ->count();
 
+        \Log::debug('Calculated results:', [
+            'correctAnswers' => $correctAnswers,
+            'totalAnswers' => count($gameState['answers'])
+        ]);
+
         $gameDetail = $userGame->gameDetail;
         $isQualified = $this->checkQualification($correctAnswers, $gameDetail);
 
-        $this->updateGameResults(
-            $userGame,
-            $correctAnswers,
-            $isQualified,
-            $gameDetail
-        );
+        \Log::debug('Qualification check:', [
+            'isQualified' => $isQualified,
+            'gameDetail' => $gameDetail->toArray()
+        ]);
+
+        $this->updateGameResults($userGame, $correctAnswers, $isQualified, $gameDetail);
 
         return [
-            'correct_answers' => $correctAnswers,
-            'total_questions' => count($gameState['answers']),
             'score' => $userGame->score,
             'qualified_for_award' => $isQualified
         ];
@@ -244,32 +250,67 @@ class QuizGameService implements GameServiceInterface
         GameDetail $gameDetail
     ): void {
         try {
+            \Log::debug('Starting updateGameResults:', [
+                'userGame' => $userGame->toArray(),
+                'correctAnswers' => $correctAnswers,
+                'isQualified' => $isQualified,
+                'gameDetail' => $gameDetail->toArray()
+            ]);
+
             DB::beginTransaction();
             
-            $userGame = $userGame->fresh(); // 最新のデータを取得
+            $userGame = $userGame->fresh();
+            \Log::debug('After fresh():', [
+                'userGame' => $userGame->toArray()
+            ]);
             
+            $baseScore = $userGame->game->base_score;
+            \Log::debug('Base score:', [
+                'base_score' => $baseScore
+            ]);
+
             $userGame->status = 'completed';
-            $userGame->score = $correctAnswers * $userGame->game->base_score;
-            $userGame->picture = $isQualified ? $this->generateAwardImagePath(
-                $gameDetail->json['region_id'],
-                $gameDetail->json['category_id']
-            ) : null;
+            $userGame->score = $correctAnswers * $baseScore;
             
-            $userGame->save();
+            if ($isQualified) {
+                $awardPath = $this->generateAwardImagePath(
+                    $gameDetail->json['region_id'],
+                    $gameDetail->json['category_id']
+                );
+                \Log::debug('Award path generated:', [
+                    'path' => $awardPath
+                ]);
+                $userGame->picture = $awardPath;
+            }
+
+            \Log::debug('Before save():', [
+                'userGame' => [
+                    'id' => $userGame->id,
+                    'status' => $userGame->status,
+                    'score' => $userGame->score,
+                    'picture' => $userGame->picture,
+                    'isDirty' => $userGame->isDirty(),
+                    'dirtyAttributes' => $userGame->getDirty()
+                ]
+            ]);
             
-            \Log::debug('Updated UserGame:', [
-                'id' => $userGame->id,
-                'status' => $userGame->status,
-                'score' => $userGame->score,
-                'picture' => $userGame->picture
+            $saved = $userGame->save();
+            
+            \Log::debug('After save():', [
+                'saved' => $saved,
+                'userGame' => $userGame->fresh()->toArray()
             ]);
 
             DB::commit();
+            
+            \Log::debug('Transaction committed');
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Failed to update game results:', [
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
+                'userGame' => $userGame->toArray(),
+                'sql' => DB::getQueryLog()
             ]);
             throw $e;
         }
