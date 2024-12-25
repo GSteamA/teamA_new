@@ -30,7 +30,7 @@
                         @if (Route::has('login'))
                             <nav class="-mx-3 flex flex-1 justify-end">
                                 @auth
-                                    <a href="{{ route('dashboard') }}">Home</a>
+                                    <a href="{{ route('laraveltravel.index') }}">Home</a>
                                 @else
                                     <a href="{{ route('login') }}">Log in</a>
 
@@ -50,7 +50,7 @@
                         <div class="form-wrapper">
                             @auth
                                 <p>ログイン済みです</p>
-                                <a href="{{ route('dashboard') }}"><span>Home</span></a>
+                                <a href="{{ route('laraveltravel.index') }}"><span>Home</span></a>
                             @else
                                 <a href="{{ route('login') }}"><span>ログインはこちら</span></a>
 

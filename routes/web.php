@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Quiz\QuizGameController;
 use App\Http\Controllers\Lasvegas\LasvegasController;
 use App\Http\Controllers\Quiz\QuizTestController;
+use App\Http\Controllers\ShowPictureController;
 
 //ルートではログイン画面を表示（lasvegas/welcome.blade.phpを正式なトップページとして作成済み）
 Route::get('/', function () {
@@ -21,8 +22,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->name('laraveltravel.index');
+    // Route::get('/laraveltravel', [LaravelTravelController::class, 'index'])->name('dashboard');
+
+
     //一覧画面
     Route::get('/laraveltravel/create', [LaravelTravelController::class, 'create'])->name('laraveltravel.create');
+    Route::get('/api/show-picture', [ShowPictureController::class, 'showPictures']);
 
     //ラスベガスゲーム
     Route::get('/lasvegas', function () {return view('lasvegas.lasvegas1');})->name('lasvegas1');
