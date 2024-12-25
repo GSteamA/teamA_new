@@ -243,20 +243,42 @@ class QuizGameService implements GameServiceInterface
         bool $isQualified,
         GameDetail $gameDetail
     ): void {
-        $userGame->update([
-            'status' => 'completed',
-            'score' => $correctAnswers * $userGame->game->base_score,
-            'picture' => $isQualified ? $this->generateAwardImagePath(
+        try {
+            DB::beginTransaction();
+            
+            $userGame = $userGame->fresh(); // 最新のデータを取得
+            
+            $userGame->status = 'completed';
+            $userGame->score = $correctAnswers * $userGame->game->base_score;
+            $userGame->picture = $isQualified ? $this->generateAwardImagePath(
                 $gameDetail->json['region_id'],
                 $gameDetail->json['category_id']
-            ) : null
-        ]);
+            ) : null;
+            
+            $userGame->save();
+            
+            \Log::debug('Updated UserGame:', [
+                'id' => $userGame->id,
+                'status' => $userGame->status,
+                'score' => $userGame->score,
+                'picture' => $userGame->picture
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Failed to update game results:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
     }
 
     private function generateAwardImagePath(int $regionId, int $categoryId): string
     {
         return sprintf(
-            'img/quiz/award_%d_%d_%s.jpg', // awardsからawardに修正
+            '../img/quiz/award_%d_%d_%s.jpg', // awardsからawardに修正
             $regionId,
             $categoryId,
             'default'
