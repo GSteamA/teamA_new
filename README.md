@@ -5,7 +5,7 @@ LaraTravel
 - ジーズをはなれてさまざまな場所に移動して現地のゲームをクリアすることで、その地域のことを理解してゲームをクリアした思い出を貯めることができるアプリです。
 
 ## ③アプリのデプロイURL
-[ LaraTravel](https://transformnavi.jp/laratravel/)
+[ LaraTravel](https://laratravel.jpn.org/)
 
 ## ④アプリのログイン用IDまたはPassword（ある場合）
 - ユーザー登録をして利用してください。
